@@ -1,0 +1,1073 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:pipelineEntry xmlns:con="http://www.bea.com/wli/sb/pipeline/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/routing/config">
+    <con:coreEntry>
+        <con:binding type="SOAP" isSoap12="false" xsi:type="con:SoapBindingType">
+            <con:wsdl ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/wsdl/srv-exp-FulfillmentFinanciacionTCF-v3"/>
+            <con:binding>
+                <con:name>srv-exp-FulfillmentFinanciacionTCF_Binding</con:name>
+                <con:namespace>http://telefonica.com/terc/srv-exp-FulfillmentFinanciacionTCF-v3</con:namespace>
+            </con:binding>
+        </con:binding>
+        <con:xqConfiguration>
+            <con:snippetVersion>1.0</con:snippetVersion>
+        </con:xqConfiguration>
+    </con:coreEntry>
+    <con:router errorHandler="_onErrorHandler-110077907661532318-2bd4c32d.145834b0b64.-6654">
+        <con:pipeline name="_onErrorHandler-110077907661532318-2bd4c32d.145834b0b64.-6654" type="error">
+            <con:stage name="Gestion_Error">
+                <con:context xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                    <con1:userNsDecl prefix="ser" namespace="http://telefonica.com/InfoServicio"/>
+                    <con5:variable name="body_rep" path="$body_rep" asChild="false" xmlns:con5="http://www.bea.com/wli/sb/typesystem/config">
+                        <con5:schema ref="coco/api-osb-Error-v3/xsd/OP_Error-v3" element="OP_error"/>
+                    </con5:variable>
+                </con:context>
+                <con:actions>
+                    <con2:assign varName="vError">
+                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7c6d</con1:id>
+                        <con2:expr>
+                            <con1:xqueryTransform>
+                                <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/replyErrorGenerico"/>
+                                <con1:param name="opRest">
+                                    <con1:path>$opRest</con1:path>
+                                </con1:param>
+                            </con1:xqueryTransform>
+                        </con2:expr>
+                    </con2:assign>
+                    <con2:replace varName="body">
+                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7c67</con1:id>
+                        <con2:location>
+                            <con1:xpathText>.</con1:xpathText>
+                        </con2:location>
+                        <con2:expr>
+                            <con1:xqueryText>$vError</con1:xqueryText>
+                        </con2:expr>
+                    </con2:replace>
+                </con:actions>
+            </con:stage>
+            <con:stage name="Fin_Servicio">
+                <con:context xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config"/>
+                <con:actions>
+                    <con1:reply isError="false" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con1:comment>Devuelve error al cliente</con1:comment>
+                        <con1:id>_ActionId-110077907661532318-2bd4c32d.145834b0b64.-65c9</con1:id>
+                        <con1:locked>true</con1:locked>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="request" name="request-{d5e2c36f.bc7b.48bc.b811.294fab56e98f}">
+            <con:stage id="_StageId-a0a0a0a.6f8adf2c.0.150ee58a837.N7cf2" name="Crear_Url">
+                <con:context>
+                    <con1:userNsDecl prefix="ful1" namespace="http://telefonica.com/terc/srv/FulfillmentFinanciacionTCF/msg/FulfillmentFinanciacionTCF-v3"/>
+                    <con1:userNsDecl prefix="ful" namespace="http://telefonica.com/terc/srv/FulfillmentFinanciacionTCF/msg/FulfillmentFinanciacionTCF-v3"/>
+                </con:context>
+                <con:actions>
+                    <con5:assign varName="urifrm" xmlns:con5="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con1:id>_ActionId-a33a0f2.2977b96d.0.16dce43fce7.N7e6f</con1:id>
+                        <con5:expr>
+                            <con1:xqueryText>$opRest/uri/text()</con1:xqueryText>
+                        </con5:expr>
+                    </con5:assign>
+                    <con5:assign varName="target" xmlns:con5="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con1:id>_ActionId-a33ec18.N18ff3bc5.0.16dda06eaf6.N7fcc</con1:id>
+                        <con2:expr>
+                            <con1:xqueryText>fn:concat($consultarUddi_respuesta/endPoint/text(), $urifrm)</con1:xqueryText>
+                        </con2:expr>
+                    </con5:assign>
+                </con:actions>
+            </con:stage>
+            <con:stage id="_StageId-a32f424.55ff6ad4.0.1517c13a704.N7a38" name="Transformacion_Rq">
+                <con:context>
+                    <con1:userNsDecl prefix="ful" namespace="http://telefonica.com/terc/srv/FulfillmentFinanciacionTCF/msg/FulfillmentFinanciacionTCF-v3"/>
+                </con:context>
+                <con:actions>
+                    <con2:assign varName="xtoj">
+                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7e99</con1:id>
+                        <con2:expr>
+                            <con1:xqueryTransform>
+                                <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/rqsAlta"/>
+                                <con1:param name="ff">
+                                    <con1:path>$body</con1:path>
+                                </con1:param>
+                            </con1:xqueryTransform>
+                        </con2:expr>
+                    </con2:assign>
+                    <con2:javaCallout varName="rspAlta">
+                        <con1:id>_ActionId-a39be32.1b2779cf.0.171080c7685.N7f0f</con1:id>
+                        <con2:archive ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/resources/lib/jsonxml"/>
+                        <con2:className>net.jsontoxmlbeans.Convertor</con2:className>
+                        <con2:method>public static java.lang.String toJSON(org.apache.xmlbeans.XmlObject)</con2:method>
+                        <con2:expr>
+                            <con1:xqueryText>$xtoj</con1:xqueryText>
+                        </con2:expr>
+                        <con2:return-param-as-ref>false</con2:return-param-as-ref>
+                    </con2:javaCallout>
+                    <con2:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7e92</con1:id>
+                        <con2:location>
+                            <con1:xpathText>.</con1:xpathText>
+                        </con2:location>
+                        <con2:expr>
+                            <con1:xqueryText>$rspAlta</con1:xqueryText>
+                        </con2:expr>
+                    </con2:replace>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="response" name="response-{d5e2c36f.bc7b.48bc.b811.294fab56e98f}">
+            <con:stage id="_StageId-a33a0f0.10f2bf21.0.16d96a29b4b.N7c2c" name="Transformacion_Rs">
+                <con:context>
+                    <con1:userNsDecl prefix="ful" namespace="http://telefonica.com/terc/srv/FulfillmentFinanciacionTCF/msg/FulfillmentFinanciacionTCF-v3"/>
+                </con:context>
+                <con:actions>
+                    <con2:javaCallout varName="xmlReply">
+                        <con1:id>_ActionId-a39b9b9.N4a8c248b.0.171545d450d.N7fbe</con1:id>
+                        <con1:disabled>true</con1:disabled>
+                        <con2:archive ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/resources/lib/jsonxml"/>
+                        <con2:className>net.jsontoxmlbeans.Convertor</con2:className>
+                        <con2:method>public static org.apache.xmlbeans.XmlObject toXML(java.lang.Object)</con2:method>
+                        <con2:expr>
+                            <con1:xqueryText>$body</con1:xqueryText>
+                        </con2:expr>
+                        <con2:return-param-as-ref>false</con2:return-param-as-ref>
+                    </con2:javaCallout>
+                    <con3:javaCallout varName="textReply" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-a39bba3.N71b7e967.0.17179011cca.N7f94</con2:id>
+                        <con3:archive ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/resources/lib/lib-jee-WppGzip"/>
+                        <con3:className>com.telefonica.gter.Gzip</con3:className>
+                        <con3:method>public static java.lang.String rGzip(java.lang.Object)</con3:method>
+                        <con3:expr>
+                            <con2:xqueryText>$body/*</con2:xqueryText>
+                        </con3:expr>
+                        <con3:return-param-as-ref>false</con3:return-param-as-ref>
+                    </con3:javaCallout>
+                    <con2:assign varName="rspPost">
+                        <con1:id>_ActionId-a33b003.24da3af7.0.16db69b7908.N7f98</con1:id>
+                        <con2:expr>
+                            <con1:xqueryTransform>
+                                <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/replyOk"/>
+                                <con1:param name="rsp">
+                                    <con1:path>$textReply</con1:path>
+                                </con1:param>
+                                <con1:param name="opRest">
+                                    <con1:path>$opRest</con1:path>
+                                </con1:param>
+                            </con1:xqueryTransform>
+                        </con2:expr>
+                    </con2:assign>
+                    <con2:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-a33b003.24da3af7.0.16db69b7908.N7f94</con1:id>
+                        <con2:location>
+                            <con1:xpathText>.</con1:xpathText>
+                        </con2:location>
+                        <con2:expr>
+                            <con1:xqueryText>$rspPost</con1:xqueryText>
+                        </con2:expr>
+                    </con2:replace>
+                    <con1:reply>
+                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7b4b</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="request" name="request-a0a0a0a.6f8adf2c.0.150ee58a837.N7cbf">
+            <con:stage id="_StageId-a0a0a0a.6f8adf2c.0.150ee58a837.N7cbd" name="AccionNoExistente">
+                <con:context/>
+                <con:actions>
+                    <con1:Error xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:comment xmlns:con2="http://www.bea.com/wli/sb/stages/config">Lanza una excepcion por el error de obtencion de operacion no existente</con2:comment>
+                        <con2:id xmlns:con2="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.6f8adf2c.0.150ee58a837.N7ab4</con2:id>
+                        <con1:errCode>9900-00003</con1:errCode>
+                        <con1:message>Accion de servicio no existente.</con1:message>
+                    </con1:Error>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="response" name="response-a0a0a0a.6f8adf2c.0.150ee58a837.N7cbe"/>
+        <con:pipeline name="PP_CompoundResource_request" type="request">
+            <con:stage name="Inicializacion">
+                <con:context xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config"/>
+                <con:actions>
+                    <con3:assign varName="infoServicio" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con1:comment>Almacena los datos del servicio (InfoServicio) en una variable</con1:comment>
+                        <con1:id>_ActionId-110077907661532318-2bd4c32d.145834b0b64.-6e0c</con1:id>
+                        <con3:expr>
+                            <con2:xqueryTransform xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+                                <con2:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/InfoServicio"/>
+                            </con2:xqueryTransform>
+                        </con3:expr>
+                    </con3:assign>
+                    <con3:assign varName="addressing" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con1:comment>Identifica si el servicio tiene datos de ws-addressing</con1:comment>
+                        <con1:id>_ActionId-a0a0a0a.Na0212.0.1508f178c84.N7f86</con1:id>
+                        <con1:locked>true</con1:locked>
+                        <con3:expr>
+                            <con1:xqueryText>$header/wsa05:ReplyTo/wsa05:Address/text()</con1:xqueryText>
+                        </con3:expr>
+                    </con3:assign>
+                </con:actions>
+            </con:stage>
+            <con:stage name="Gestion_Cabecera_Rq">
+                <con:context xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                    <con1:varNsDecl prefix="cab" namespace="http://telefonica.com/tran/comarq/cc/cabecera"/>
+                </con:context>
+                <con:actions>
+                    <con7:validate xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/publish/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/stages/transform/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config">
+                        <con1:comment>Valida la cabecera TE_Cabecera</con1:comment>
+                        <con1:id>_ActionId-110077907661532318-2bd4c32d.145834b0b64.-6e08</con1:id>
+                        <con1:disabled>true</con1:disabled>
+                        <con1:locked>true</con1:locked>
+                        <con7:schema ref="coco/lib-osb-Resources-v1/xsd/TE_Cabecera"/>
+                        <con7:schemaElement xmlns:cab="http://telefonica.com/tran/comarq/cc/cabecera">cab:TE_Cabecera</con7:schemaElement>
+                        <con7:varName>header</con7:varName>
+                        <con7:location>
+                            <con1:xpathText>./cab:TE_Cabecera</con1:xpathText>
+                        </con7:location>
+                    </con7:validate>
+                    <con3:ifThenElse xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/services/security/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Tratamiento diferenciado segun sea necesario insertar o reemplazar el campo de cabecera uriOrigen</con2:comment>
+                        <con2:id>_ActionId-a32a502.N275a2eea.0.15a605d9a3f.N7f93</con2:id>
+                        <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                        <con3:case id="_BranchId-a32a502.N275a2eea.0.15a605d9a3f.N7f92">
+                            <con3:condition>
+                                <con2:xqueryText>fn:not((fn:exists($header/cab:TE_Cabecera)))</con2:xqueryText>
+                            </con3:condition>
+                            <con3:actions>
+                                <con3:insert varName="header">
+                                    <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Inserta el valor de uriOrigen de la cabecera TE_Header con el valor del endpoint de respuesta del cliente del servicio</con2:comment>
+                                    <con2:id>_ActionId-a32a502.N275a2eea.0.15a605d9a3f.N7f91</con2:id>
+                                    <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                                    <con3:location>
+                                        <con2:xpathText>.</con2:xpathText>
+                                    </con3:location>
+                                    <con3:where>last-child</con3:where>
+                                    <con3:expr>
+                                        <con2:xqueryTransform>
+                                            <con2:resource ref="coco/lib-osb-Resources-v1/xq/GestionaCabecera_crearCabecera"/>
+                                            <con2:param name="dominioOrigen">
+                                                <con2:path>'UNKNOWN'</con2:path>
+                                            </con2:param>
+                                            <con2:param name="idioma">
+                                                <con2:path>1</con2:path>
+                                            </con2:param>
+                                            <con2:param name="usuario">
+                                                <con2:path>'UNKNOWN'</con2:path>
+                                            </con2:param>
+                                            <con2:param name="origen">
+                                                <con2:path>'UNKNOWN'</con2:path>
+                                            </con2:param>
+                                            <con2:param name="operacion">
+                                                <con2:path>$operation</con2:path>
+                                            </con2:param>
+                                        </con2:xqueryTransform>
+                                    </con3:expr>
+                                </con3:insert>
+                            </con3:actions>
+                        </con3:case>
+                        <con3:default>
+                            <con7:replace varName="header" contents-only="false" xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/publish/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config">
+                                <con1:comment xmlns:con8="http://www.bea.com/wli/sb/stages/config">Realiza las modificaciones necesarias a la cabecera por pasar por el servicio de exposicion</con1:comment>
+                                <con8:id xmlns:con8="http://www.bea.com/wli/sb/stages/config">_ActionId-a32a502.N275a2eea.0.15a605d9a3f.N7f5c</con8:id>
+                                <con1:locked xmlns:con8="http://www.bea.com/wli/sb/stages/config">true</con1:locked>
+                                <con7:location>
+                                    <con1:xpathText xmlns:con8="http://www.bea.com/wli/sb/stages/config">./cab:TE_Cabecera</con1:xpathText>
+                                </con7:location>
+                                <con7:expr>
+                                    <con1:xqueryTransform xmlns:con8="http://www.bea.com/wli/sb/stages/config">
+                                        <con1:resource ref="coco/lib-osb-Resources-v1/xq/GestionaCabecera_modificacionCabecera"/>
+                                        <con1:param name="te_Cabecera">
+                                            <con1:path>$header/cab:TE_Cabecera</con1:path>
+                                        </con1:param>
+                                        <con1:param name="operacion">
+                                            <con1:path>$operation</con1:path>
+                                        </con1:param>
+                                    </con1:xqueryTransform>
+                                </con7:expr>
+                            </con7:replace>
+                        </con3:default>
+                    </con3:ifThenElse>
+                    <con7:assign varName="te_header" xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/publish/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/stages/transform/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:env="http://www.bea.com/wli/config/env" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config">
+                        <con1:comment>Almacena la cabecera TE_Cabecera en una variable para su uso en la respuesta</con1:comment>
+                        <con1:id>_ActionId-110077907661532318-2bd4c32d.145834b0b64.-6e06</con1:id>
+                        <con1:locked>true</con1:locked>
+                        <con7:expr>
+                            <con1:xqueryText>$header/cab:TE_Cabecera</con1:xqueryText>
+                        </con7:expr>
+                    </con7:assign>
+                </con:actions>
+            </con:stage>
+            <con:stage name="Obtencion_URI" errorHandler="_onErrorHandler-9166383242275280707-55e1845c.146dc7b26b3.-7f5e">
+                <con:context xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/transform/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports">
+                    <con1:userNsDecl namespace="http://telefonica.com/InfoServicio" prefix="ser"/>
+                </con:context>
+                <con:actions>
+                    <con3:wsCallout xmlns:con5="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con1:comment>Invoca al servicio que obtiene el endpoint a partir del service key usando el UDDI</con1:comment>
+                        <con1:id>_ActionId-a398fef.57f10f9d.0.17116aa82a8.N7f96</con1:id>
+                        <con5:service ref="coco/api-osb-ConsultaEndPointOSR-v1/ps/api-osb-ConsultaEndPointOSR_PS" xsi:type="ref:ProxyRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con5:operation>ConsultaEndPointOSR</con5:operation>
+                        <con5:request>
+                            <con5:body wrapped="false">consultarUddi_peticion</con5:body>
+                            <con5:header>header</con5:header>
+                        </con5:request>
+                        <con5:response>
+                            <con5:body wrapped="false">consultarUddi_respuesta</con5:body>
+                            <con5:header>header_response</con5:header>
+                        </con5:response>
+                        <con5:requestTransform>
+                            <con5:assign varName="consultarUddi_peticion">
+                                <con1:comment>Asigna la entrada al servicio de obtencion del endpoint</con1:comment>
+                                <con1:id>_ActionId-a398fef.57f10f9d.0.17116aa82a8.N7f95</con1:id>
+                                <con5:expr>
+                                    <con1:xqueryTransform>
+                                        <con1:resource ref="coco/api-osb-ConsultaEndPointOSR-v1/xq/ConsultarEndPoint_Mapping"/>
+                                        <con1:param name="serviceKey">
+                                            <con1:path>$infoServicio/ClavesOperaciones/clave[@operacion =  $operation]/text()</con1:path>
+                                        </con1:param>
+                                    </con1:xqueryTransform>
+                                </con5:expr>
+                            </con5:assign>
+                        </con5:requestTransform>
+                        <con5:responseTransform/>
+                    </con3:wsCallout>
+                    <con5:wsCallout xmlns:con5="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/routing/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con1:comment>Invoca al servicio que obtiene el endpoint a partir del service key usando el UDDI</con1:comment>
+                        <con1:id>_ActionId-110077907661532318-2bd4c32d.145834b0b64.-6e04</con1:id>
+                        <con5:service ref="coco/api-osb-ConsultaEndPointOSR-v1/ps/api-osb-ConsultaEndPointOSR_PS" xsi:type="ref:ProxyRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con5:operation>ConsultaEndPointOSR</con5:operation>
+                        <con5:request>
+                            <con5:body wrapped="false">consultarUddi_terc</con5:body>
+                            <con5:header>header</con5:header>
+                        </con5:request>
+                        <con5:response>
+                            <con5:body wrapped="false">consultarUddi_terc_url</con5:body>
+                            <con5:header>header_response</con5:header>
+                        </con5:response>
+                        <con5:requestTransform>
+                            <con3:assign varName="epTerc">
+                                <con1:id>_ActionId-a398fef.57f10f9d.0.17116aa82a8.N7f14</con1:id>
+                                <con3:expr>
+                                    <con1:xqueryText>$infoServicio/ClavesOperaciones/clave[@operacion = "createSPConnectionMessage"]/text()</con1:xqueryText>
+                                </con3:expr>
+                            </con3:assign>
+                            <con5:assign varName="consultarUddi_terc">
+                                <con1:comment>Asigna la entrada al servicio de obtencion del endpoint</con1:comment>
+                                <con1:id>_ActionId-110077907661532318-2bd4c32d.145834b0b64.-6e05</con1:id>
+                                <con5:expr>
+                                    <con1:xqueryTransform>
+                                        <con1:resource ref="coco/api-osb-ConsultaEndPointOSR-v1/xq/ConsultarEndPoint_Mapping"/>
+                                        <con1:param name="serviceKey">
+                                            <con1:path>$epTerc</con1:path>
+                                        </con1:param>
+                                    </con1:xqueryTransform>
+                                </con5:expr>
+                            </con5:assign>
+                        </con5:requestTransform>
+                        <con5:responseTransform/>
+                    </con5:wsCallout>
+                </con:actions>
+            </con:stage>
+            <con:stage name="Gestion_Addressing">
+                <con:context xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con4="http://www.bea.com/wli/sb/services/security/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                    <con2:userNsDecl prefix="cab" namespace="http://telefonica.com/tran/comarq/cc/cabecera" xmlns:con5="http://www.bea.com/wli/sb/stages/config"/>
+                </con:context>
+                <con:actions>
+                    <con3:ifThenElse xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con4="http://www.bea.com/wli/sb/services/security/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con5:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Tratamiento diferenciado si la peticion tiene ws-addressing</con5:comment>
+                        <con5:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.3b4abee5.0.151910160ed.N7f8c</con5:id>
+                        <con5:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con5:locked>
+                        <con3:case id="_BranchId-a0a0a0a.3b4abee5.0.151910160ed.N7f8b">
+                            <con3:condition>
+                                <con5:xqueryText xmlns:con5="http://www.bea.com/wli/sb/stages/config">$addressing!=""</con5:xqueryText>
+                            </con3:condition>
+                            <con3:actions>
+                                <con3:ifThenElse>
+                                    <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Tratamiento especifico de addressing si el servicio es asincrono</con2:comment>
+                                    <con2:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.fb179e3.0.15091109862.N7f9a</con2:id>
+                                    <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                                    <con3:case id="a0a0a0a.fb179e3.1.15091443f3c.N7ffc">
+                                        <con3:condition>
+                                            <con5:xqueryText xmlns:con5="http://www.bea.com/wli/sb/stages/config">$addressing!="http://www.w3.org/2005/08/addressing/anonymous"</con5:xqueryText>
+                                        </con3:condition>
+                                        <con3:actions>
+                                            <con3:ifThenElse>
+                                                <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Tratamiento diferenciado segun sea necesario insertar o reemplazar el campo de cabecera uriOrigen</con2:comment>
+                                                <con2:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.N4d232259.0.1508a3306ac.N7f78</con2:id>
+                                                <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                                                <con3:case id="a0a0a0a.fb179e3.1.15091443f3c.N7ffb">
+                                                    <con3:condition>
+                                                        <con2:xqueryText xmlns:con5="http://www.bea.com/wli/sb/stages/config">fn:exists($header/cab:TE_Cabecera/cab:uriOrigen)</con2:xqueryText>
+                                                    </con3:condition>
+                                                    <con3:actions>
+                                                        <con7:replace varName="header" contents-only="true" xmlns:con6="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/publish/config" xmlns:con5="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con4="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con7="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con1="http://www.bea.com/wli/sb/stages/config">
+                                                            <con1:comment>Reemplaza el valor de uriOrigen de la cabecera TE_Header con el valor del endpoint de respuesta del cliente del servicio</con1:comment>
+                                                            <con1:id>_ActionId-a0a0a0a.N4d232259.0.1508a3306ac.N7ff1</con1:id>
+                                                            <con1:locked>true</con1:locked>
+                                                            <con7:location>
+                                                                <con1:xpathText>./cab:TE_Cabecera/cab:uriOrigen</con1:xpathText>
+                                                            </con7:location>
+                                                            <con7:expr>
+                                                                <con1:xqueryText>$header/wsa05:ReplyTo/wsa05:Address/text()</con1:xqueryText>
+                                                            </con7:expr>
+                                                        </con7:replace>
+                                                    </con3:actions>
+                                                </con3:case>
+                                                <con3:default>
+                                                    <con3:insert varName="header">
+                                                        <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Inserta el valor de uriOrigen de la cabecera TE_Header con el valor del endpoint de respuesta del cliente del servicio</con2:comment>
+                                                        <con2:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.N4d232259.0.1508a3306ac.N7f7f</con2:id>
+                                                        <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                                                        <con3:location>
+                                                            <con2:xpathText xmlns:con5="http://www.bea.com/wli/sb/stages/config">./cab:TE_Cabecera/cab:dominioOrigen</con2:xpathText>
+                                                        </con3:location>
+                                                        <con3:where>after</con3:where>
+                                                        <con3:expr>
+                                                            <con2:xqueryText xmlns:con5="http://www.bea.com/wli/sb/stages/config">&lt;cab:uriOrigen>{$header/wsa05:ReplyTo/wsa05:Address/text()}&lt;/cab:uriOrigen></con2:xqueryText>
+                                                        </con3:expr>
+                                                    </con3:insert>
+                                                </con3:default>
+                                            </con3:ifThenElse>
+                                            <con3:replace varName="header" contents-only="true">
+                                                <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Reemplaza el valor de addressing "ReplyTo" con el endpoint del servicio de callback</con2:comment>
+                                                <con2:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.N4d232259.0.1508a3306ac.N7ffe</con2:id>
+                                                <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                                                <con3:location>
+                                                    <con2:xpathText xmlns:con5="http://www.bea.com/wli/sb/stages/config">./wsa05:ReplyTo/wsa05:Address</con2:xpathText>
+                                                </con3:location>
+                                                <con3:expr>
+                                                    <con2:xqueryText xmlns:con5="http://www.bea.com/wli/sb/stages/config">fn:concat($header/wsa05:To/text(),"_cbk")</con2:xqueryText>
+                                                </con3:expr>
+                                            </con3:replace>
+                                            <con3:replace varName="header" contents-only="true">
+                                                <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Reemplaza el valor de addressing "FaultTo" con el endpoint del servicio de callback</con2:comment>
+                                                <con2:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.6ff079e4.0.1508a0cb2c9.N7ff7</con2:id>
+                                                <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                                                <con3:location>
+                                                    <con2:xpathText xmlns:con5="http://www.bea.com/wli/sb/stages/config">./wsa05:FaultTo/wsa05:Address</con2:xpathText>
+                                                </con3:location>
+                                                <con3:expr>
+                                                    <con2:xqueryText xmlns:con5="http://www.bea.com/wli/sb/stages/config">fn:concat($header/wsa05:To/text(),"_cbk")</con2:xqueryText>
+                                                </con3:expr>
+                                            </con3:replace>
+                                        </con3:actions>
+                                    </con3:case>
+                                    <con3:default/>
+                                </con3:ifThenElse>
+                                <con3:replace varName="header" contents-only="true">
+                                    <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Reemplaza el valor de addressing "To" con el endpoint  (en caso que no exista no hace nada)</con2:comment>
+                                    <con2:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.6ff079e4.0.1508a0cb2c9.N7fee</con2:id>
+                                    <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                                    <con3:location>
+                                        <con2:xpathText xmlns:con5="http://www.bea.com/wli/sb/stages/config">./wsa05:To</con2:xpathText>
+                                    </con3:location>
+                                    <con3:expr>
+                                        <con2:xqueryText xmlns:con5="http://www.bea.com/wli/sb/stages/config">$consultarUddi_respuesta/endPoint/text()</con2:xqueryText>
+                                    </con3:expr>
+                                </con3:replace>
+                                <con3:delete varName="header" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config">
+                                    <con5:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Elimina la informacion de tracking de respuesta</con5:comment>
+                                    <con5:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.3b4abee5.0.151910160ed.N7fcd</con5:id>
+                                    <con5:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con5:locked>
+                                    <con3:location>
+                                        <con5:xpathText xmlns:con5="http://www.bea.com/wli/sb/stages/config">./wsa05:ReplyTo/wsa05:ReferenceParameters</con5:xpathText>
+                                    </con3:location>
+                                </con3:delete>
+                                <con3:delete varName="header" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:con2="http://www.bea.com/wli/sb/stages/logging/config">
+                                    <con5:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Elimina la informacion de tracking de fallo</con5:comment>
+                                    <con5:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.3b4abee5.0.151910160ed.N7fc8</con5:id>
+                                    <con5:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con5:locked>
+                                    <con3:location>
+                                        <con5:xpathText xmlns:con5="http://www.bea.com/wli/sb/stages/config">./wsa05:FaultTo/wsa05:ReferenceParameters</con5:xpathText>
+                                    </con3:location>
+                                </con3:delete>
+                            </con3:actions>
+                        </con3:case>
+                        <con3:default/>
+                    </con3:ifThenElse>
+                </con:actions>
+            </con:stage>
+            <con:stage id="_StageId-a33a0f0.10f2bf21.0.16d96a29b4b.N7fce" name="InfoREST">
+                <con:context>
+                    <con1:userNsDecl prefix="ful" namespace="http://telefonica.com/terc/srv/FulfillmentFinanciacionTCF/msg/fulfillmentFinanciacionTCF-v3"/>
+                </con:context>
+                <con:actions>
+                    <con2:assign varName="infoRest">
+                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7fcb</con1:id>
+                        <con2:expr>
+                            <con1:xqueryTransform>
+                                <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/InfoREST"/>
+                            </con1:xqueryTransform>
+                        </con2:expr>
+                    </con2:assign>
+                    <con2:assign varName="varRest">
+                        <con1:id>_ActionId-a33ea3c.Ne95f33b.0.16e82b24d0c.N7ed4</con1:id>
+                        <con2:expr>
+                            <con1:xqueryText>$body/ful:FulfillmentFinanciacionTCF_IN/ful:SPMessageAction/ful:Action/text()</con1:xqueryText>
+                        </con2:expr>
+                    </con2:assign>
+                    <con2:assign varName="opRest">
+                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7fc8</con1:id>
+                        <con2:expr>
+                            <con1:xqueryText>$infoRest/RestOperations/operations [@accion = $varRest]</con1:xqueryText>
+                        </con2:expr>
+                    </con2:assign>
+                </con:actions>
+            </con:stage>
+            <con:stage id="_StageId-a39be32.1b2779cf.0.171080c7685.N7ea3" name="Crear URL Token">
+                <con:context/>
+                <con:actions>
+                    <con2:assign varName="urlToken">
+                        <con1:id>_ActionId-a39be32.1b2779cf.0.171080c7685.N7ea0</con1:id>
+                        <con2:expr>
+                            <con1:xqueryText>fn:concat($consultarUddi_respuesta/endPoint/text(), "/ApiTCFToken4Telefonica/v1")</con1:xqueryText>
+                        </con2:expr>
+                    </con2:assign>
+                </con:actions>
+            </con:stage>
+            <con:stage id="_StageId-a39b54d.12d05731.0.1722baf616a.N7ffc" name="Get Token">
+                <con:context/>
+                <con:actions>
+                    <con2:wsCallout>
+                        <con1:id>_ActionId-a39b54d.12d05731.0.1722baf616a.N7ff9</con1:id>
+                        <con2:service ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/bs/srv-nuc-osb-SPConnectionMessage_BS" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con2:operation>getToken</con2:operation>
+                        <con2:request>
+                            <con2:body wrapped="false">gettoken_in</con2:body>
+                            <con2:header>header</con2:header>
+                        </con2:request>
+                        <con2:response>
+                            <con2:body wrapped="false">gettoken_out</con2:body>
+                        </con2:response>
+                        <con2:requestTransform>
+                            <con2:delete varName="header">
+                                <con1:id>_ActionId-a39b54d.12d05731.0.1722baf616a.N7ff6</con1:id>
+                                <con2:location>
+                                    <con1:xpathText>.</con1:xpathText>
+                                </con2:location>
+                            </con2:delete>
+                            <con3:assign varName="gettoken_header" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+                                <con2:id>_ActionId-a39b54d.12d05731.0.1722baf616a.N7f8e</con2:id>
+                                <con3:expr>
+                                    <con2:xqueryTransform>
+                                        <con2:resource ref="coco/lib-osb-Resources-v1/xq/GestionaCabecera_crearCabecera"/>
+                                        <con2:param name="dominioOrigen">
+                                            <con2:path>"TERC"</con2:path>
+                                        </con2:param>
+                                        <con2:param name="idioma">
+                                            <con2:path>"1"</con2:path>
+                                        </con2:param>
+                                        <con2:param name="usuario">
+                                            <con2:path>"89806594049826130339601855565468073596"</con2:path>
+                                        </con2:param>
+                                        <con2:param name="origen">
+                                            <con2:path>"srv-exp-osb-FulfillmentFinanciacionTCF"</con2:path>
+                                        </con2:param>
+                                        <con2:param name="operacion">
+                                            <con2:path>"fulfillmentFinanciacionTCF"</con2:path>
+                                        </con2:param>
+                                    </con2:xqueryTransform>
+                                </con3:expr>
+                            </con3:assign>
+                            <con3:insert varName="header" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config">
+                                <con2:id>_ActionId-a39b54d.12d05731.0.1722baf616a.N7f59</con2:id>
+                                <con3:location>
+                                    <con2:xpathText>.</con2:xpathText>
+                                </con3:location>
+                                <con3:where>first-child</con3:where>
+                                <con3:expr>
+                                    <con2:xqueryText>$gettoken_header</con2:xqueryText>
+                                </con3:expr>
+                            </con3:insert>
+                            <con2:assign varName="gettoken_in">
+                                <con1:id>_ActionId-a39b54d.12d05731.0.1722baf616a.N7f55</con1:id>
+                                <con2:expr>
+                                    <con1:xqueryTransform>
+                                        <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/prepareGetTokenMessage"/>
+                                        <con1:param name="action">
+                                            <con1:path>$varRest</con1:path>
+                                        </con1:param>
+                                    </con1:xqueryTransform>
+                                </con2:expr>
+                            </con2:assign>
+                            <con1:routing-options xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con5="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config">
+                                <con2:id>_ActionId-a39b54d.12d05731.0.1722baf616a.N7f21</con2:id>
+                                <con1:uriExpr>
+                                    <con2:xqueryText>$consultarUddi_terc_url/endPoint/text()</con2:xqueryText>
+                                </con1:uriExpr>
+                            </con1:routing-options>
+                        </con2:requestTransform>
+                        <con2:responseTransform>
+                            <con2:assign varName="token">
+                                <con1:id>_ActionId-a39b54d.12d05731.0.1722baf616a.N7f1c</con1:id>
+                                <con2:expr>
+                                    <con1:xqueryText>$gettoken_out/GetToken_OUT/CharacteristicValue/Value</con1:xqueryText>
+                                </con2:expr>
+                            </con2:assign>
+                        </con2:responseTransform>
+                    </con2:wsCallout>
+                </con:actions>
+            </con:stage>
+            <con:stage id="_StageId-a39be32.1b2779cf.0.171080c7685.N7ea9" name="Obtener Token">
+                <con:context/>
+                <con:actions>
+                    <con2:wsCallout>
+                        <con1:id>_ActionId-a39be32.1b2779cf.0.171080c7685.N7ea8</con1:id>
+                        <con2:service ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/bs/srv-nuc-osb-FulfillmentFinanciacionTCF_BS" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con2:request>
+                            <con2:payload wrapped="false">outbound</con2:payload>
+                        </con2:request>
+                        <con2:response>
+                            <con2:payload wrapped="false">tokBody</con2:payload>
+                        </con2:response>
+                        <con2:requestTransform>
+                            <con2:transport-headers>
+                                <con1:id>_ActionId-a398fef.57f10f9d.0.17116aa82a8.N7fcd</con1:id>
+                                <con2:header-set>outbound-request</con2:header-set>
+                                <con2:header value="expression" name="Content-Type">
+                                    <con1:xqueryText>"application/json"</con1:xqueryText>
+                                </con2:header>
+                            </con2:transport-headers>
+                            <con2:insert varName="outbound">
+                                <con1:id>_ActionId-a39be32.1b2779cf.0.171080c7685.N7e9c</con1:id>
+                                <con2:location>
+                                    <con1:xpathText>./ctx:transport/ctx:request/tp:headers</con1:xpathText>
+                                </con2:location>
+                                <con2:where>last-child</con2:where>
+                                <con2:expr>
+                                    <con1:xqueryTransform>
+                                        <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/hapikey"/>
+                                        <con1:param name="key">
+                                            <con1:path>fn:data($infoServicio/apikey)</con1:path>
+                                        </con1:param>
+                                    </con1:xqueryTransform>
+                                </con2:expr>
+                            </con2:insert>
+                            <con2:routing-options>
+                                <con1:id>_ActionId-a39be32.1b2779cf.0.171080c7685.N7ea4</con1:id>
+                                <con2:uriExpr>
+                                    <con1:xqueryText>$urlToken</con1:xqueryText>
+                                </con2:uriExpr>
+                                <con2:restOptions>
+                                    <con2:verb>GET</con2:verb>
+                                </con2:restOptions>
+                            </con2:routing-options>
+                        </con2:requestTransform>
+                        <con2:responseTransform>
+                            <con2:javaCallout varName="xmlToken">
+                                <con1:id>_ActionId-a39be32.1b2779cf.0.171080c7685.N7e99</con1:id>
+                                <con2:archive ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/resources/lib/jsonxml"/>
+                                <con2:className>net.jsontoxmlbeans.Convertor</con2:className>
+                                <con2:method>public static org.apache.xmlbeans.XmlObject toXML(java.lang.Object)</con2:method>
+                                <con2:expr>
+                                    <con1:xqueryText>$tokBody</con1:xqueryText>
+                                </con2:expr>
+                                <con2:return-param-as-ref>false</con2:return-param-as-ref>
+                            </con2:javaCallout>
+                        </con2:responseTransform>
+                    </con2:wsCallout>
+                </con:actions>
+            </con:stage>
+            <con:stage id="_StageId-a39be32.1b2779cf.0.171080c7685.N7e92" name="Grabar info Token">
+                <con:context/>
+                <con:actions>
+                    <con5:wsCallout xmlns:con1="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/routing/config" xmlns:con5="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-a398fef.57f10f9d.0.17116aa82a8.N7f21</con2:id>
+                        <con5:service ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/bs/srv-nuc-osb-SPConnectionMessage_BS" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                        <con5:operation>createSPConnectionMessage</con5:operation>
+                        <con5:request>
+                            <con5:body wrapped="false">createSPMessage_in</con5:body>
+                            <con5:header>header</con5:header>
+                        </con5:request>
+                        <con5:response>
+                            <con5:body wrapped="false">createSPMessage_out</con5:body>
+                        </con5:response>
+                        <con1:requestTransform>
+                            <con1:delete varName="header">
+                                <con2:id>_ActionId-a398fef.57f10f9d.0.17116aa82a8.N7f20</con2:id>
+                                <con1:location>
+                                    <con2:xpathText>.</con2:xpathText>
+                                </con1:location>
+                            </con1:delete>
+                            <con3:assign varName="rchead" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                                <con2:id>_ActionId-a398fef.57f10f9d.0.17116aa82a8.N7f1f</con2:id>
+                                <con3:expr>
+                                    <con2:xqueryTransform>
+                                        <con2:resource ref="coco/lib-osb-Resources-v1/xq/GestionaCabecera_crearCabecera"/>
+                                        <con2:param name="dominioOrigen">
+                                            <con2:path>"TERC"</con2:path>
+                                        </con2:param>
+                                        <con2:param name="idioma">
+                                            <con2:path>"1"</con2:path>
+                                        </con2:param>
+                                        <con2:param name="usuario">
+                                            <con2:path>"89806594049826130339601855565468073596"</con2:path>
+                                        </con2:param>
+                                        <con2:param name="origen">
+                                            <con2:path>"srv-exp-osb-FulfillmentFinanciacionTCF"</con2:path>
+                                        </con2:param>
+                                        <con2:param name="operacion">
+                                            <con2:path>"fulfillmentFinanciacionTCF"</con2:path>
+                                        </con2:param>
+                                    </con2:xqueryTransform>
+                                </con3:expr>
+                            </con3:assign>
+                            <con3:insert varName="header" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                                <con2:id>_ActionId-a398fef.57f10f9d.0.17116aa82a8.N7f1e</con2:id>
+                                <con3:location>
+                                    <con2:xpathText>.</con2:xpathText>
+                                </con3:location>
+                                <con3:where>first-child</con3:where>
+                                <con3:expr>
+                                    <con2:xqueryText>$rchead</con2:xqueryText>
+                                </con3:expr>
+                            </con3:insert>
+                            <con2:assign varName="createSPMessage_in" xmlns:con1="http://www.bea.com/wli/sb/stages/config" xmlns:con2="http://www.bea.com/wli/sb/stages/transform/config" xmlns:con3="http://www.bea.com/wli/sb/stages/logging/config">
+                                <con1:id xmlns:con6="http://www.bea.com/wli/sb/stages/config">_ActionId-a39be32.1b2779cf.0.171080c7685.N7e8e</con1:id>
+                                <con2:expr>
+                                    <con6:xqueryTransform xmlns:con6="http://www.bea.com/wli/sb/stages/config">
+                                        <con6:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/prepareCreateSPMessage"/>
+                                        <con6:param name="ff">
+                                            <con6:path>$xmlToken</con6:path>
+                                        </con6:param>
+                                    </con6:xqueryTransform>
+                                </con2:expr>
+                            </con2:assign>
+                            <con1:routing-options>
+                                <con2:id>_ActionId-a398fef.57f10f9d.0.17116aa82a8.N7f1c</con2:id>
+                                <con1:uriExpr>
+                                    <con2:xqueryText>$consultarUddi_terc_url/endPoint/text()</con2:xqueryText>
+                                </con1:uriExpr>
+                            </con1:routing-options>
+                        </con1:requestTransform>
+                        <con1:responseTransform/>
+                    </con5:wsCallout>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline name="_onErrorHandler-9166383242275280707-55e1845c.146dc7b26b3.-7f5e" type="error">
+            <con:stage name="RelanzarError">
+                <con:context xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con4="http://www.bea.com/wli/sb/services/security/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config"/>
+                <con:actions>
+                    <con3:Error xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con4="http://www.bea.com/wli/sb/services/security/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Lanza una excepcion por el error de obtencion del endpoint</con2:comment>
+                        <con2:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-9166383242275280707-55e1845c.146dc7b26b3.-7f3f</con2:id>
+                        <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                        <con3:errCode>9900-00006</con3:errCode>
+                        <con3:message>Error resolviendo Endpoint de servicio</con3:message>
+                    </con3:Error>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline name="PP_CompoundResource_response" type="response">
+            <con:stage name="Gestion_Cabecera_Rs">
+                <con:comment/>
+                <con:context xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                    <con2:varNsDecl namespace="http://telefonica.com/tran/comarq/cc/cabecera" prefix="cab" xmlns:con5="http://www.bea.com/wli/sb/stages/config"/>
+                </con:context>
+                <con:actions>
+                    <con3:replace varName="header" xmlns:con4="http://www.bea.com/wli/sb/stages/publish/config" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Reemplaza la cabecera TE_Cabecera de la respuesta con la original de la peticion (en caso asincrono no hace nada)</con2:comment>
+                        <con2:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-8557219670037249874--3e0d0495.145cbf54269.-6fff</con2:id>
+                        <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                        <con3:location>
+                            <con2:xpathText xmlns:con5="http://www.bea.com/wli/sb/stages/config">./cab:TE_Cabecera</con2:xpathText>
+                        </con3:location>
+                        <con3:expr>
+                            <con2:xqueryText xmlns:con5="http://www.bea.com/wli/sb/stages/config">$te_header</con2:xqueryText>
+                        </con3:expr>
+                    </con3:replace>
+                </con:actions>
+            </con:stage>
+            <con:stage name="Finalizacion">
+                <con:comment/>
+                <con:context xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con4="http://www.bea.com/wli/sb/services/security/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config"/>
+                <con:actions>
+                    <con3:insert varName="inbound" xmlns:ser="http://www.bea.com/wli/sb/services" xmlns:con1="http://www.bea.com/wli/sb/stages/routing/config" xmlns:http="http://www.bea.com/wli/sb/transports/http" xmlns:oper="http://xmlns.oracle.com/servicebus/pipeline/operations" xmlns:con4="http://www.bea.com/wli/sb/services/security/config" xmlns:env="http://www.bea.com/wli/config/env" xmlns:tran="http://www.bea.com/wli/sb/transports" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:comment xmlns:con5="http://www.bea.com/wli/sb/stages/config">Devuelve el codigo http recuperado de la respuesta</con2:comment>
+                        <con2:id xmlns:con5="http://www.bea.com/wli/sb/stages/config">_ActionId-a0a0a0a.N2e58df36.0.15089604f02.N7f92</con2:id>
+                        <con2:locked xmlns:con5="http://www.bea.com/wli/sb/stages/config">true</con2:locked>
+                        <con3:location>
+                            <con2:xpathText xmlns:con5="http://www.bea.com/wli/sb/stages/config">./ctx:transport/ctx:response</con2:xpathText>
+                        </con3:location>
+                        <con3:where>last-child</con3:where>
+                        <con3:expr>
+                            <con2:xqueryText xmlns:con5="http://www.bea.com/wli/sb/stages/config">$outbound/ctx:transport/ctx:response/http:http-response-code</con2:xqueryText>
+                        </con3:expr>
+                    </con3:insert>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:pipeline type="error" name="error-a33a0f0.10f2bf21.0.16d96a29b4b.N7cd1">
+            <con:stage id="_StageId-a33a0f0.10f2bf21.0.16d96a29b4b.N7cd0" name="ERROR">
+                <con:context/>
+                <con:actions>
+                    <con3:log>
+                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7ccd</con1:id>
+                        <con3:logLevel>debug</con3:logLevel>
+                        <con3:expr>
+                            <con1:xqueryText>$outbound/ctx:transport/ctx:response/http:http-response-code</con1:xqueryText>
+                        </con3:expr>
+                    </con3:log>
+                    <con3:log>
+                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7cca</con1:id>
+                        <con3:logLevel>debug</con3:logLevel>
+                        <con3:expr>
+                            <con1:xqueryText>$body</con1:xqueryText>
+                        </con3:expr>
+                    </con3:log>
+                    <con3:javaCallout varName="error" xmlns:con1="http://www.bea.com/wli/sb/stages/logging/config" xmlns:con2="http://www.bea.com/wli/sb/stages/config" xmlns:con3="http://www.bea.com/wli/sb/stages/transform/config">
+                        <con2:id>_ActionId-a39bba3.N71b7e967.0.17179011cca.N7ffe</con2:id>
+                        <con3:archive ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/resources/lib/lib-jee-WppGzip"/>
+                        <con3:className>com.telefonica.gter.Gzip</con3:className>
+                        <con3:method>public static java.lang.String rGzip(java.lang.Object)</con3:method>
+                        <con3:expr>
+                            <con2:xqueryText>$body/*</con2:xqueryText>
+                        </con3:expr>
+                        <con3:return-param-as-ref>false</con3:return-param-as-ref>
+                    </con3:javaCallout>
+                    <con2:javaCallout varName="xmlError">
+                        <con1:id>_ActionId-a39b9b9.N4a8c248b.0.171545d450d.N7ff6</con1:id>
+                        <con1:disabled>true</con1:disabled>
+                        <con2:archive ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/resources/lib/jsonxml"/>
+                        <con2:className>net.jsontoxmlbeans.Convertor</con2:className>
+                        <con2:method>public static org.apache.xmlbeans.XmlObject toXML(java.lang.Object)</con2:method>
+                        <con2:expr>
+                            <con1:xqueryText>$body</con1:xqueryText>
+                        </con2:expr>
+                        <con2:return-param-as-ref>false</con2:return-param-as-ref>
+                    </con2:javaCallout>
+                    <con2:ifThenElse>
+                        <con1:id>_ActionId-a39b9b9.N4a8c248b.0.171545d450d.N7ffa</con1:id>
+                        <con2:case id="_BranchId-a39b9b9.N4a8c248b.0.171545d450d.N7ff9">
+                            <con2:condition>
+                                <con1:xqueryText>fn:compare($outbound/ctx:transport/ctx:response/http:http-response-code/text(), "404") = 0</con1:xqueryText>
+                            </con2:condition>
+                            <con2:actions>
+                                <con2:assign varName="bdrsp">
+                                    <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7cbc</con1:id>
+                                    <con2:expr>
+                                        <con1:xqueryTransform>
+                                            <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/replyError"/>
+                                            <con1:param name="error">
+                                                <con1:path>$error</con1:path>
+                                            </con1:param>
+                                            <con1:param name="opRest">
+                                                <con1:path>$opRest</con1:path>
+                                            </con1:param>
+                                        </con1:xqueryTransform>
+                                    </con2:expr>
+                                </con2:assign>
+                            </con2:actions>
+                        </con2:case>
+                        <con2:case id="_BranchId-a39bba3.N71b7e967.0.17179011cca.N7fcb">
+                            <con2:condition>
+                                <con1:xqueryText>fn:compare($outbound/ctx:transport/ctx:response/http:http-response-code/text(), "401") = 0</con1:xqueryText>
+                            </con2:condition>
+                            <con2:actions>
+                                <con2:assign varName="bdrsp">
+                                    <con1:id>_ActionId-a39bba3.N71b7e967.0.17179011cca.N7f97</con1:id>
+                                    <con2:expr>
+                                        <con1:xqueryTransform>
+                                            <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/replyErrorGenerico"/>
+                                            <con1:param name="opRest">
+                                                <con1:path>$opRest</con1:path>
+                                            </con1:param>
+                                        </con1:xqueryTransform>
+                                    </con2:expr>
+                                </con2:assign>
+                            </con2:actions>
+                        </con2:case>
+                        <con2:default>
+                            <con2:assign varName="bdrsp">
+                                <con1:id>_ActionId-a39b9b9.N4a8c248b.0.171545d450d.N7fc1</con1:id>
+                                <con2:expr>
+                                    <con1:xqueryTransform>
+                                        <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/replyErrorVariable"/>
+                                        <con1:param name="error">
+                                            <con1:path>$error</con1:path>
+                                        </con1:param>
+                                        <con1:param name="opRest">
+                                            <con1:path>$opRest</con1:path>
+                                        </con1:param>
+                                    </con1:xqueryTransform>
+                                </con2:expr>
+                            </con2:assign>
+                        </con2:default>
+                    </con2:ifThenElse>
+                    <con2:replace varName="body" contents-only="true">
+                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7cb6</con1:id>
+                        <con2:location>
+                            <con1:xpathText>.</con1:xpathText>
+                        </con2:location>
+                        <con2:expr>
+                            <con1:xqueryText>$bdrsp</con1:xqueryText>
+                        </con2:expr>
+                    </con2:replace>
+                    <con1:reply>
+                        <con1:id>_ActionId-a33eee2.d6f8fe6.0.16e5f34e5a3.N7f99</con1:id>
+                    </con1:reply>
+                </con:actions>
+            </con:stage>
+        </con:pipeline>
+        <con:flow>
+            <con:pipeline-node name="PP_Servicio">
+                <con:request>PP_CompoundResource_request</con:request>
+                <con:response>PP_CompoundResource_response</con:response>
+            </con:pipeline-node>
+            <con:branch-node type="operation" id="_FlowId-a0a0a0a.6f8adf2c.0.150ee58a837.N7ec0" name="BranchNode1">
+                <con:context/>
+                <con:branch-table>
+                    <con:branch name="fulfillmentFinanciacionTCF">
+                        <con:operator>equals</con:operator>
+                        <con:value/>
+                        <con:flow>
+                            <con:pipeline-node name="BN_FulfillmentFinanciacionTCF">
+                                <con:request>request-{d5e2c36f.bc7b.48bc.b811.294fab56e98f}</con:request>
+                                <con:response>response-{d5e2c36f.bc7b.48bc.b811.294fab56e98f}</con:response>
+                            </con:pipeline-node>
+                            <con:route-node name="RN_FulfillmentFinanciacionTCF" error-handler="error-a33a0f0.10f2bf21.0.16d96a29b4b.N7cd1">
+                                <con:context>
+                                    <con1:userNsDecl prefix="ful" namespace="http://telefonica.com/terc/srv/FulfillmentFinanciacionTCF/msg/FulfillmentFinanciacionTCF-v3"/>
+                                </con:context>
+                                <con:actions>
+                                    <con2:ifThenElse>
+                                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7f48</con1:id>
+                                        <con2:case id="_BranchId-a33a0f0.10f2bf21.0.16d96a29b4b.N7f47">
+                                            <con2:condition>
+                                                <con1:xqueryText>fn:compare(fn:data($opRest/method),"POST")=0</con1:xqueryText>
+                                            </con2:condition>
+                                            <con2:actions>
+                                                <con4:route>
+                                                    <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7f14</con1:id>
+                                                    <con4:service ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/bs/srv-nuc-osb-FulfillmentFinanciacionTCF_BS" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                                                    <con4:outboundTransform>
+                                                        <con2:delete varName="header">
+                                                            <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7ec3</con1:id>
+                                                            <con2:location>
+                                                                <con1:xpathText>.</con1:xpathText>
+                                                            </con2:location>
+                                                        </con2:delete>
+                                                        <con2:transport-headers>
+                                                            <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7e8f</con1:id>
+                                                            <con2:header-set>outbound-request</con2:header-set>
+                                                            <con2:header value="expression" name="Content-Type">
+                                                                <con1:xqueryText>"application/json"</con1:xqueryText>
+                                                            </con2:header>
+                                                            <con2:header value="expression" name="Authorization_old">
+                                                                <con1:xqueryText>for $j in $xmlToken//*:object/*:field
+      where fn:compare(fn:data($j/@name),"access_token")=0
+      return concat("Bearer ", fn:data($j/*:string/@value))</con1:xqueryText>
+                                                            </con2:header>
+                                                            <con2:header value="expression" name="apikey">
+                                                                <con1:xqueryText>fn:data($infoServicio/apikey)</con1:xqueryText>
+                                                            </con2:header>
+                                                            <con2:header value="expression" name="Authorization">
+                                                                <con1:xqueryText>$token</con1:xqueryText>
+                                                            </con2:header>
+                                                        </con2:transport-headers>
+                                                        <con2:insert varName="outbound">
+                                                            <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7e8c</con1:id>
+                                                            <con1:disabled>true</con1:disabled>
+                                                            <con2:location>
+                                                                <con1:xpathText>./ctx:transport/ctx:request/tp:headers</con1:xpathText>
+                                                            </con2:location>
+                                                            <con2:where>first-child</con2:where>
+                                                            <con2:expr>
+                                                                <con1:xqueryTransform>
+                                                                    <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/hapikey"/>
+                                                                    <con1:param name="key">
+                                                                        <con1:path>fn:data($infoServicio/apikey)</con1:path>
+                                                                    </con1:param>
+                                                                </con1:xqueryTransform>
+                                                            </con2:expr>
+                                                        </con2:insert>
+                                                        <con2:insert varName="header">
+                                                            <con1:id>_ActionId-a39b54d.12d05731.0.1722baf616a.N7ee8</con1:id>
+                                                            <con1:disabled>true</con1:disabled>
+                                                            <con2:location>
+                                                                <con1:xpathText>./ctx:transport/ctx:request/tp:headers</con1:xpathText>
+                                                            </con2:location>
+                                                            <con2:where>last-child</con2:where>
+                                                            <con2:expr>
+                                                                <con1:xqueryTransform>
+                                                                    <con1:resource ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/xq/bearer"/>
+                                                                    <con1:param name="ff">
+                                                                        <con1:path>$xmlToken</con1:path>
+                                                                    </con1:param>
+                                                                </con1:xqueryTransform>
+                                                            </con2:expr>
+                                                        </con2:insert>
+                                                        <con2:insert varName="header">
+                                                            <con1:id>_ActionId-a398fef.57f10f9d.0.17116aa82a8.N7f17</con1:id>
+                                                            <con1:disabled>true</con1:disabled>
+                                                            <con2:location>
+                                                                <con1:xpathText>./ctx:transport/ctx:request/tp:headers</con1:xpathText>
+                                                            </con2:location>
+                                                            <con2:where>last-child</con2:where>
+                                                            <con2:expr>
+                                                                <con1:xqueryText>fn:concat("Bearer ", $token)</con1:xqueryText>
+                                                            </con2:expr>
+                                                        </con2:insert>
+                                                        <con2:routing-options>
+                                                            <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7e89</con1:id>
+                                                            <con2:uriExpr>
+                                                                <con1:xqueryText>$target</con1:xqueryText>
+                                                            </con2:uriExpr>
+                                                            <con2:restOptions>
+                                                                <con2:verb>POST</con2:verb>
+                                                            </con2:restOptions>
+                                                        </con2:routing-options>
+                                                    </con4:outboundTransform>
+                                                    <con4:responseTransform>
+                                                        <con3:log>
+                                                            <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7ec9</con1:id>
+                                                            <con3:logLevel>error</con3:logLevel>
+                                                            <con3:expr>
+                                                                <con1:xqueryText>$outbound/ctx:transport/ctx:response/http:http-response-code</con1:xqueryText>
+                                                            </con3:expr>
+                                                            <con3:message>http-response-code#></con3:message>
+                                                        </con3:log>
+                                                        <con3:log>
+                                                            <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7ec6</con1:id>
+                                                            <con3:logLevel>error</con3:logLevel>
+                                                            <con3:expr>
+                                                                <con1:xqueryText>$body</con1:xqueryText>
+                                                            </con3:expr>
+                                                            <con3:message>payload#></con3:message>
+                                                        </con3:log>
+                                                    </con4:responseTransform>
+                                                </con4:route>
+                                            </con2:actions>
+                                        </con2:case>
+                                        <con2:default>
+                                            <con4:route>
+                                                <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7e9f</con1:id>
+                                                <con4:service ref="terc/srv-exp-osb-FulfillmentFinanciacionTCF-v3/bs/srv-nuc-osb-FulfillmentFinanciacionTCF_BS" xsi:type="ref:BusinessServiceRef" xmlns:ref="http://www.bea.com/wli/sb/reference"/>
+                                                <con4:outboundTransform>
+                                                    <con2:Error>
+                                                        <con1:id>_ActionId-a33a0f0.10f2bf21.0.16d96a29b4b.N7e9c</con1:id>
+                                                        <con2:errCode>ERROR-METHOD</con2:errCode>
+                                                        <con2:message>Error in the definition of the method</con2:message>
+                                                    </con2:Error>
+                                                </con4:outboundTransform>
+                                                <con4:responseTransform/>
+                                            </con4:route>
+                                        </con2:default>
+                                    </con2:ifThenElse>
+                                </con:actions>
+                            </con:route-node>
+                        </con:flow>
+                    </con:branch>
+                    <con:default-branch>
+                        <con:flow>
+                            <con:pipeline-node name="BN_Default">
+                                <con:request>request-a0a0a0a.6f8adf2c.0.150ee58a837.N7cbf</con:request>
+                                <con:response>response-a0a0a0a.6f8adf2c.0.150ee58a837.N7cbe</con:response>
+                            </con:pipeline-node>
+                        </con:flow>
+                    </con:default-branch>
+                </con:branch-table>
+            </con:branch-node>
+        </con:flow>
+    </con:router>
+</con:pipelineEntry>
